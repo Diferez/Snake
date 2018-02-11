@@ -3,7 +3,7 @@ import pygame
 from random import randint
 import time
 class NoD(object):
-	"""docstring for NoD"""
+	
 	def __init__(self, x, y,Wal):
 		self.x=x
 		self.y=y
@@ -54,8 +54,7 @@ def Ia(Ini, Fin):
 
 			
 			return a
-		#p='Estoy en '+ repr(current.x) + ' ' + repr(current.y) + ' Y mis vecinos son ' + repr(current.Ve[0].x) +' '+ repr(current.Ve[0].y) + ' / ' + repr(current.Ve[1].x) +' '+ repr(current.Ve[1].y) + ' / ' + repr(current.Ve[2].x) +' '+ repr(current.Ve[2].y) + ' / ' + repr(current.Ve[3].x) +' '+ repr(current.Ve[3].y)
-		#print(p)
+		
 		for nodo in current.Ve:
 			
 			if nodo in Lclose or nodo.Wal==3:
@@ -312,7 +311,7 @@ while not hecho:
 LARGO,
                               ALTO])
      
-    # Limitamos a 60 fotogramas por segundo.
+
     pa=Sn.lsn()
 
     try:
@@ -325,7 +324,7 @@ LARGO,
     
     
     elapsed = (time.clock() - start)
-    #print(elapsed)
+    
     if elapsed > 0.000001:
         Sn.mov()
         start = time.clock()
@@ -390,7 +389,7 @@ LARGO,
     
     
     
-    # Avanzamos y actualizamos la pantalla con lo que hemos dibujado.
+    
     
     
     pygame.display.flip()
