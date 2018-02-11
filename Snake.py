@@ -161,7 +161,8 @@ def Ia2(Sn,Path,dele):
 NEGRO = (0, 0, 0)
 BLANCO = (255, 255, 255)
 VERDE = ( 0, 255, 0)
-ROJO = (255, 0, 0)
+AZUL = (255, 0, 0)
+ROJO = (0, 0, 255)
 LARGO  = 10
 ALTO = 10
 
@@ -246,7 +247,7 @@ for a in range (0,6):
 
 
 
-grid[1][5] = 1
+
  
 x=randint(0,Xa-5)
 y=randint(0,Ya-5)
@@ -268,7 +269,7 @@ hecho = False
  
 
 com=Comida(Sn.lis[0].x,Sn.lis[0].y)
-grid[com.x][com.y]=2
+grid[com.x][com.y]=4
 
 reloj = pygame.time.Clock()
 start = time.clock() 
@@ -313,6 +314,8 @@ while not hecho:
                 color = ROJO
             if grid[fila][columna] == 3:
             	color = NEGRO
+            if grid[fila][columna] == 4:
+            	color = AZUL
             pygame.draw.rect(pantalla,
                              color,
                              [(MARGEN+LARGO) * columna + MARGEN,
@@ -365,7 +368,7 @@ while not hecho:
     
     for Nod in par:
         grid[Nod.x][Nod.y]=1
-    grid[com.x][com.y]=2
+    
     
 
 
@@ -373,6 +376,8 @@ while not hecho:
     Ia2(Sn,path,True)
     for Nod in path:
     	grid[Nod.x][Nod.y]=2
+
+    grid[com.x][com.y]=4
     
 
 
