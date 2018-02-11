@@ -233,6 +233,18 @@ for fila in range(Xa):
 			Ngrid[fila][columna].Ve.append(Ngrid[fila+1][columna])
 			Ngrid[fila][columna].Ve.append(Ngrid[fila][columna+1])
 			Ngrid[fila][columna].Ve.append(Ngrid[fila][columna-1])
+for a in range (0,6):
+	for fila in range(Xa):
+		for columna in range(Ya):
+			n=0
+			for nodo in Ngrid[fila][columna].Ve:
+				if nodo.Wal==3:
+					n+=1
+			if n >= 3:
+				Ngrid[fila][columna].Wal=3
+				grid[fila][columna]=3
+
+
 
 grid[1][5] = 1
  
