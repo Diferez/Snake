@@ -135,7 +135,7 @@ class Snake:
         		self.lis[0].y-=1
         	else:
         		self.lis[0].y=108
-def Ia2(Sn,Path):
+def Ia2(Sn,Path,dele):
 
 	if Sn.lis[0].x==0 and Path[0].x==53 and Sn.lis[0].y == Path[0].y:
 		Sn.dir="AR"
@@ -154,9 +154,8 @@ def Ia2(Sn,Path):
 		Sn.dir="LF"
 	elif Sn.lis[0].x == Path[0].x and Sn.lis[0].y < Path[0].y:
 		Sn.dir="RG"
-
-
-	Path.pop(0)
+	if dele:
+		Path.pop(0)
 	pass
 
 NEGRO = (0, 0, 0)
@@ -256,7 +255,7 @@ pygame.display.set_caption("Snake")
 hecho = False
  
 
-com=Comida(randint(0,Xa-1),randint(0,Ya-1))
+com=Comida(Sn.lis[0].x,Sn.lis[0].y)
 grid[com.x][com.y]=2
 
 reloj = pygame.time.Clock()
@@ -305,10 +304,7 @@ while not hecho:
             pygame.draw.rect(pantalla,
                              color,
                              [(MARGEN+LARGO) * columna + MARGEN,
-                              (MARGEN+ALTO) * fila + MARGEN,
-
-
-LARGO,
+                              (MARGEN+ALTO) * fila + MARGEN,LARGO,
                               ALTO])
      
 
@@ -325,20 +321,30 @@ LARGO,
     
     elapsed = (time.clock() - start)
     
-    if elapsed > 0.000001:
-        Sn.mov()
-        start = time.clock()
-        
-        if pa[0].x==com.x and pa[0].y==com.y:
-            
-            Sn.comer()
-            while True:
-            	Cx=randint(0,Xa-1)
-            	Cy=randint(0,Ya-1)
-            	if grid[Cx][Cy]==0:
-            		com=Comida(Cx,Cy)
-            		flag=True
-            		break
+    if elapsed > 0.000001 or flag:
+    	if not flag:
+    		Sn.mov()
+
+    	flag=False
+    	
+    	start = time.clock()
+    	if pa[0].x==com.x and pa[0].y==com.y:
+        	Sn.comer()
+        	while True:
+        		Cx=randint(0,Xa-1)
+        		Cy=randint(0,Ya-1)
+        		if grid[Cx][Cy]==0:
+        			com=Comida(Cx,Cy)
+        			Ini=Ngrid[Sn.lis[0].x][Sn.lis[0].y]
+        			Fin=Ngrid[com.x][com.y]
+        			path=Ia(Ini,Fin)
+        			try:
+
+        				Ia2(Sn,path,False)
+
+        				break
+        			except:
+        				pass
 
         
 
@@ -348,37 +354,14 @@ LARGO,
     for Nod in par:
         grid[Nod.x][Nod.y]=1
     grid[com.x][com.y]=2
-    if flag:
-
-    	Ini=Ngrid[Sn.lis[0].x][Sn.lis[0].y]
-    	Fin=Ngrid[com.x][com.y]
-    	try:
-    		path=Ia(Ini,Fin)
-    		
-    		flag=False
-    	except:
-    		while True:
-    			Cx=randint(0,Xa-1)
-    			Cy=randint(0,Ya-1)
-    			if grid[Cx][Cy]==0:
-    				com=Comida(Cx,Cy)
-    				flag=True
-    				break
+    
 
 
-    try:
-    	Ia2(Sn,path)
-    	for Nod in path:
-    		grid[Nod.x][Nod.y]=2
-    except:
-    	while True:
-    		grid[com.x][com.y]=0
-    		Cx=randint(0,Xa-1)
-    		Cy=randint(0,Ya-1)
-    		if grid[Cx][Cy]==0:
-    			com=Comida(Cx,Cy)
-    			flag=True
-    			break
+    
+    Ia2(Sn,path,True)
+    for Nod in path:
+    	grid[Nod.x][Nod.y]=2
+    
 
 
 
