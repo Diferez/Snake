@@ -2,6 +2,9 @@
 import pygame
 from random import randint
 import time
+Xa=60
+Ya=120
+grid = []
 class NoD(object):
 	
 	def __init__(self, x, y,Wal):
@@ -97,10 +100,22 @@ class Nodo:
             
 
 class Snake:
-    def __init__(self, nod):
+    def __init__(self,color):
+        x=randint(0,Xa-5)
+        y=randint(0,Ya-5)
+        cab=Nodo(x,y,"SI")
+        pri=Nodo(x,y+1,"NO")
+        pri.addp(cab)
+        sec=Nodo(x,y+2,"NO")
+        sec.addp(pri)
+        
+        
         self.lis=[]
-        self.lis.append(nod)
+        self.lis.append(cab)
         self.dir="AR"
+        self.color=color
+        self.lis.append(pri)
+        self.lis.append(sec)
     def lsn(self):
         return self.lis
     def add(self, nod):
@@ -111,6 +126,12 @@ class Snake:
         mnodo=Nodo(self.lis[-1].x, self.lis[-1].y,"NO")
         mnodo.addp(self.lis[-1])
         self.lis.append(mnodo)
+    def imp(self,grid):
+        for Nod in self.lis:
+            grid[Nod.x][Nod.y]=1
+    def lim(self,grid):
+        for Nod in self.lis:
+            grid[Nod.x][Nod.y]=0
     def mov(self):
         
         for nod in reversed(self.lis):
@@ -119,14 +140,14 @@ class Snake:
         	if self.lis[0].x!=0:
         		self.lis[0].x-=1
         	else:
-        		self.lis[0].x=53
+        		self.lis[0].x=Xa-1
         if self.dir=="RG":
-        	if self.lis[0].y!=108:
+        	if self.lis[0].y!=Ya-1:
         		self.lis[0].y+=1
         	else:
         		self.lis[0].y=0
         if self.dir=="DW":
-        	if self.lis[0].x!=53:
+        	if self.lis[0].x!=Xa-1:
         		self.lis[0].x+=1
         	else:
            		self.lis[0].x=0
@@ -134,16 +155,16 @@ class Snake:
         	if self.lis[0].y!=0:
         		self.lis[0].y-=1
         	else:
-        		self.lis[0].y=108
+        		self.lis[0].y=Ya-1
 def Ia2(Sn,Path,dele):
 
-	if Sn.lis[0].x==0 and Path[0].x==53 and Sn.lis[0].y == Path[0].y:
+	if Sn.lis[0].x==0 and Path[0].x==Xa-1 and Sn.lis[0].y == Path[0].y:
 		Sn.dir="AR"
-	elif Sn.lis[0].x==53 and Path[0].x==0 and Sn.lis[0].y == Path[0].y:
+	elif Sn.lis[0].x==Xa-1 and Path[0].x==0 and Sn.lis[0].y == Path[0].y:
 		Sn.dir="DW"
-	elif Sn.lis[0].x == Path[0].x and Sn.lis[0].y == 0 and Path[0].y == 108:
+	elif Sn.lis[0].x == Path[0].x and Sn.lis[0].y == 0 and Path[0].y == Ya-1:
 		Sn.dir="LF"
-	elif Sn.lis[0].x == Path[0].x and Sn.lis[0].y == 108 and Path[0].y == 0:
+	elif Sn.lis[0].x == Path[0].x and Sn.lis[0].y == Ya-1 and Path[0].y == 0:
 		Sn.dir="RG"
 
 	elif Sn.lis[0].x > Path[0].x and Sn.lis[0].y == Path[0].y:
@@ -166,11 +187,10 @@ ROJO = (0, 0, 255)
 LARGO  = 10
 ALTO = 10
 
-MARGEN = 1
-Xa=54
-Ya=109
+MARGEN = 0
 
-grid = []
+
+
 Ngrid = []
 N=0
 for fila in range(Xa):
@@ -248,17 +268,7 @@ for a in range (0,6):
 
 
 
- 
-x=randint(0,Xa-5)
-y=randint(0,Ya-5)
-cab=Nodo(x,y,"SI")
-pri=Nodo(x,y+1,"NO")
-pri.addp(cab)
-sec=Nodo(x,y+2,"NO")
-sec.addp(pri)
-Sn=Snake(cab)
-Sn.add(pri)
-Sn.add(sec)
+Sn=Snake("VERDE")
 pygame.init()
   
 DIMENSION_VENTANA = [1200, 600]
@@ -326,12 +336,11 @@ while not hecho:
     pa=Sn.lsn()
 
     try:
-    	for Nod in pa:
-    		grid[Nod.x][Nod.y]=0
+    	Sn.lim(grid)
     	for Nod in path:
     		grid[Nod.x][Nod.y]=0
     except:
-    	pass
+    	pass 
     
     
     elapsed = (time.clock() - start)
@@ -366,8 +375,7 @@ while not hecho:
     par=Sn.lsn()
     
     
-    for Nod in par:
-        grid[Nod.x][Nod.y]=1
+    Sn.imp(grid)
     
     
 
